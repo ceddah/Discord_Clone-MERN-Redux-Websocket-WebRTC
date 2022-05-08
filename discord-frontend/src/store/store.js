@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   alert: alertReducer,
 });
 
-const store = createStore(
+export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
