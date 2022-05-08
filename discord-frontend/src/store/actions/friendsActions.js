@@ -29,7 +29,7 @@ const sendFriendInvitation = (data, closeDialogHandler) => {
 
 export const setPendingFriendsInvitations = (pendingFriendsInvitations) => {
   return {
-    type: friendsActions.setPendingFriendsInvitations,
+    type: friendsActions.SET_PENDING_FRIENDS_INVITATIONS,
     pendingFriendsInvitations,
   };
 };

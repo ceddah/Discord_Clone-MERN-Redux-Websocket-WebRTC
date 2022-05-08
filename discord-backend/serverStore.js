@@ -25,7 +25,7 @@ const getActiveConnections = (userId) => {
   const activeConnections = [];
   // Because user can be connected on multiple devices, we are checking for every connection
   // for this specific userId
-  connectedUsers.forEach(function (key, value) {
+  connectedUsers.forEach(function (value, key) {
     if (value.userId === userId) {
       activeConnections.push(key);
     }
