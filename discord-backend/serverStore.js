@@ -10,6 +10,7 @@ const getSocketServerInstance = () => {
 };
 
 const addNewConnectedUser = ({ socketId, userId }) => {
+  // this is key value pairs ----> socketId: { userId }
   connectedUsers.set(socketId, { userId });
   console.log("connectedUsers: ", connectedUsers);
 };
