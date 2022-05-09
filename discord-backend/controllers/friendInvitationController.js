@@ -1,7 +1,8 @@
 const FriendInvitation = require("../models/friendInvitation");
 const User = require("../models/User");
 const {
-  updateFriendsPendingInviration,
+  updateFriendsPendingInvitations,
+  updateFriends,
 } = require("../socketHandlers/updates/friends");
 
 exports.postInvite = async (req, res) => {
@@ -49,7 +50,58 @@ exports.postInvite = async (req, res) => {
     receiverId: targetUser._id,
   });
 
-  updateFriendsPendingInviration(targetUser._id.toString());
+  updateFriendsPendingInvitations(targetUser._id.toString());
 
   return res.status(201).send("Friend Invitation has been sent!");
+};
+
+exports.postAccept = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const invitation = await FriendInvitation.findById(id);
+
+    if (!invitation) {
+      return res.status(401).send("Error occurred. Please try again.");
+    }
+
+    const { senderId, receiverId } = invitation;
+
+    const senderUser = await User.findById(senderId);
+    senderUser.friends = [...senderUser.friends, receiverId];
+
+    const receiverUser = await User.findById(receiverId);
+    receiverUser.friends = [...receiverUser.friends, senderId];
+
+    await senderUser.save();
+    await receiverUser.save();
+
+    await FriendInvitation.findByIdAndDelete(id);
+
+    updateFriendsPendingInvitations(receiverId.toString());
+
+    // Update friends list of both users if they are only
+    updateFriends(senderId.toString());
+    updateFriends(receiverId.toString());
+
+    return res.status(200).send("Friend successfully added!");
+  } catch (error) {
+    console.log(err);
+    return res.status(500).send("Something went wrong. Please try again.");
+  }
+};
+exports.postReject = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const { userId } = req.user;
+    const invitationExists = await FriendInvitation.exists({ _id: id });
+
+    if (invitationExists) {
+      await FriendInvitation.findByIdAndDelete(id);
+    }
+    updateFriendsPendingInvitations(userId);
+    return res.status(200).send("Invitation was successfully rejected.");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Something went wrong. Please try again.");
+  }
 };

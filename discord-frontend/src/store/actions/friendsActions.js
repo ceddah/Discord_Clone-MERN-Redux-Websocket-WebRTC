@@ -11,6 +11,8 @@ export const getActions = (dispatch) => {
   return {
     sendFriendInvitation: (data, closeDialogHandler) =>
       dispatch(sendFriendInvitation(data, closeDialogHandler)),
+    acceptFriendInvitation: (data) => dispatch(acceptFriendInvitation(data)),
+    rejectFriendInvitation: (data) => dispatch(rejectFriendInvitation(data)),
   };
 };
 
@@ -31,5 +33,43 @@ export const setPendingFriendsInvitations = (pendingFriendsInvitations) => {
   return {
     type: friendsActions.SET_PENDING_FRIENDS_INVITATIONS,
     pendingFriendsInvitations,
+  };
+};
+
+const acceptFriendInvitation = (data) => {
+  return async (dispatch) => {
+    const response = api.acceptFriendInvitation(data);
+
+    if (response.error) {
+      dispatch(openAlertMessage(response.exception?.response?.data));
+    } else {
+      dispatch(openAlertMessage("Invitation accepted!"));
+    }
+  };
+};
+
+const rejectFriendInvitation = (data) => {
+  return async (dispatch) => {
+    const response = api.rejectFriendInvitation(data);
+
+    if (response.error) {
+      dispatch(openAlertMessage(response.exception?.response?.data));
+    } else {
+      dispatch(openAlertMessage("Invitation rejected!"));
+    }
+  };
+};
+
+export const setFriends = (friends) => {
+  return {
+    type: friendsActions.SET_FRIENDS,
+    friends,
+  };
+};
+
+export const setOnlineUsers = (onlineUsers) => {
+  return {
+    type: friendsActions.SET_ONLINE_USERS,
+    onlineUsers,
   };
 };
