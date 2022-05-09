@@ -9,7 +9,7 @@ const AvatarPreview = styled("div")({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: "20px",
+  fontSize: "16px",
   fontWeight: "700",
   marginLeft: "5px",
   color: "white",
@@ -17,7 +17,9 @@ const AvatarPreview = styled("div")({
 
 const Avatar = ({ username, large }) => {
   return (
-    <AvatarPreview style={large ? { height: "80px", width: "80px" } : {}}>
+    <AvatarPreview
+      style={large ? { height: "80px", width: "80px", fontSize: "28px" } : {}}
+    >
       {username.substring(0, 2)}
     </AvatarPreview>
   );

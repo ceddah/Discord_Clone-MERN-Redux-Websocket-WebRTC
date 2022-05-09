@@ -30,6 +30,7 @@ const updateFriends = async (userId) => {
   try {
     // find active connections of this user
     const receiverList = serverStore.getActiveConnections(userId);
+    // If user is online
     if (receiverList.length > 0) {
       const user = await User.findById(userId, { _id: 1, friends: 1 }).populate(
         "friends",
