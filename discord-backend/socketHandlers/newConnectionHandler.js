@@ -12,7 +12,7 @@ const newConnectionHandler = async (socket, io) => {
     userId: userDetails.userId,
   });
 
-  // update pending invitations as soon as he connects
+  // update pending invitations as soon as user connects
   updateFriendsPendingInvitations(userDetails.userId);
   updateFriends(userDetails.userId);
 };

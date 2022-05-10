@@ -10,6 +10,8 @@ import LoginPage from "./authPages/LoginPage/LoginPage";
 import RegisterPage from "./authPages/RegisterPage/RegisterPage";
 import AlertNotification from "./shared/components/AlertNotification";
 
+// Rework logout when jwt expires functionality
+
 const App = () => {
   return (
     <>
