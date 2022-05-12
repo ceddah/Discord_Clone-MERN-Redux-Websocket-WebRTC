@@ -10,10 +10,10 @@ const OnlineIndicator = () => {
         display: "flex",
         alignItems: "center",
         position: "absolute",
-        right: "5px",
+        right: "10px",
       }}
     >
-      <FiberManualRecordIcon />
+      <FiberManualRecordIcon fontSize="small" />
     </Box>
   );
 };
