@@ -5,10 +5,14 @@ import {
   setActiveRooms,
 } from "../store/actions/roomActions";
 import * as socketConnection from "./socketConnection";
+import * as webRTCHandler from "./webRTCHandler";
 
 export const createNewRoom = () => {
-  store.dispatch(setOpenRoom(true, true));
-  socketConnection.createNewRoom();
+  const audioOnly = store.getState().room.audioOnly;
+  webRTCHandler.getLocalStreamPreview(audioOnly, () => {
+    store.dispatch(setOpenRoom(true, true));
+    socketConnection.createNewRoom();
+  });
 };
 
 export const newRoomCreated = (data) => {
@@ -34,8 +38,17 @@ export const updateActiveRooms = (data) => {
 };
 
 export const joinRoom = (roomId) => {
-  store.dispatch(setRoomDetails({ roomId }));
-  store.dispatch(setOpenRoom(false, true));
+  const audioOnly = store.getState().room.audioOnly;
+  webRTCHandler.getLocalStreamPreview(audioOnly, () => {
+    store.dispatch(setRoomDetails({ roomId }));
+    store.dispatch(setOpenRoom(false, true));
+    socketConnection.joinRooom({ roomId });
+  });
+};
 
-  socketConnection.joinRooom({ roomId });
+export const leaveRoom = () => {
+  const roomId = store.getState().room.roomDetails.roomId;
+  socketConnection.leaveRoom({ roomId });
+  store.dispatch(setRoomDetails(null));
+  store.dispatch(setOpenRoom(false, false));
 };
