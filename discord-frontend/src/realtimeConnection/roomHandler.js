@@ -3,6 +3,7 @@ import {
   setOpenRoom,
   setRoomDetails,
   setActiveRooms,
+  setLocalStream,
 } from "../store/actions/roomActions";
 import * as socketConnection from "./socketConnection";
 import * as webRTCHandler from "./webRTCHandler";
@@ -48,6 +49,14 @@ export const joinRoom = (roomId) => {
 
 export const leaveRoom = () => {
   const roomId = store.getState().room.roomDetails.roomId;
+
+  const localStream = store.getState().room.localStream;
+
+  if (localStream) {
+    localStream.getTracks().forEach((track) => track.stop());
+    store.dispatch(setLocalStream(null));
+  }
+
   socketConnection.leaveRoom({ roomId });
   store.dispatch(setRoomDetails(null));
   store.dispatch(setOpenRoom(false, false));

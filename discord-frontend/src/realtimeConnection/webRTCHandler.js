@@ -1,5 +1,7 @@
 import store from "../store/store";
-import { setLocalStream } from "../store/actions/roomActions";
+import { setLocalStream, setRemoteStreams } from "../store/actions/roomActions";
+import Peer from "simple-peer";
+import * as socketConnection from "./socketConnection";
 
 const onlyAudioConstraints = {
   audio: true,
@@ -9,6 +11,20 @@ const onlyAudioConstraints = {
 const defaultConstraints = {
   audio: true,
   video: true,
+};
+
+const getConfiguration = () => {
+  const turnIceServers = null;
+  if (turnIceServers) {
+  } else {
+    return {
+      iceServers: [
+        {
+          urls: "stun:stun.l.google.com:19302",
+        },
+      ],
+    };
+  }
 };
 
 export const getLocalStreamPreview = (onlyAudio = false, callback) => {
@@ -24,4 +40,49 @@ export const getLocalStreamPreview = (onlyAudio = false, callback) => {
     .catch((err) => {
       console.log("Cannot get an access to local stream.", err);
     });
+};
+
+let peers = {};
+
+export const prepareNewPeerConnection = (connUserSocketId, isInitator) => {
+  const localStream = store.getState().room.localStream;
+
+  if (isInitator) {
+    console.log("preparing new connection as initiator");
+  } else {
+    console.log("preparing new connection as not initiator");
+  }
+
+  peers[connUserSocketId] = new Peer({
+    initiator: isInitator,
+    config: getConfiguration(),
+    stream: localStream,
+  });
+
+  peers[connUserSocketId].on("signal", (data) => {
+    const signalData = {
+      signal: data,
+      connUserSocketId: connUserSocketId,
+    };
+    socketConnection.signalPeerData(signalData);
+  });
+
+  // we get this event on established connection between 2 users
+  peers[connUserSocketId].on("stream", (remoteStream) => {
+    remoteStream.connUserSocketId = connUserSocketId;
+    addNewRemoteStream(remoteStream);
+  });
+};
+
+export const handleSignalingData = (data) => {
+  const { connUserSocketId, signal } = data;
+  if (peers[connUserSocketId]) {
+    peers[connUserSocketId].signal(signal);
+  }
+};
+
+export const addNewRemoteStream = (remoteStream) => {
+  const remoteStreams = store.getState().room.remoteStreams;
+  const newRemoteStreams = [...remoteStreams, remoteStream];
+  store.dispatch(setRemoteStreams(newRemoteStreams));
 };
