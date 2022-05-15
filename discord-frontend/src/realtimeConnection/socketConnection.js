@@ -66,6 +66,10 @@ export const connectWithSocketServer = (userDetails) => {
   socket.on("conn-signal", (data) => {
     webRTCHandler.handleSignalingData(data);
   });
+
+  socket.on("room-participant-left", (data) => {
+    webRTCHandler.handleParticipantLeftRoom(data);
+  });
 };
 
 export const sendDirectMessage = (data) => {

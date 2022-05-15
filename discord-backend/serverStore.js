@@ -63,10 +63,7 @@ const getActiveRooms = () => {
   return [...activeRooms];
 };
 const getActiveRoom = (roomId) => {
-  const activeRoom = activeRooms.find((room) => room.roomId === roomId);
-  return {
-    ...activeRoom,
-  };
+  return activeRooms.find((room) => room.roomId === roomId);
 };
 
 const joinActiveRoom = (roomId, participantsDetails) => {
