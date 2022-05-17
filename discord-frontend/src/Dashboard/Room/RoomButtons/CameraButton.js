@@ -4,11 +4,13 @@ import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import { getfullScreenButtonStyles } from "./fullScreenButtonStyles";
 
-const CameraButton = ({ isRoomMinimized }) => {
+const CameraButton = ({ isRoomMinimized, localStream }) => {
   const [cameraEnabled, setCameraEnabled] = useState(true);
   const fullScreenStyles = getfullScreenButtonStyles();
 
   const handleToggleCamera = () => {
+    localStream.getVideoTracks()[0].enabled = !cameraEnabled;
+
     setCameraEnabled(!cameraEnabled);
   };
 
