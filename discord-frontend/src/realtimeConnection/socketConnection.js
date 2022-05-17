@@ -22,9 +22,10 @@ export const connectWithSocketServer = (userDetails) => {
     console.log("Successfully connected with scoket.io server", socket.id);
   });
 
-  // CHANGE THIS, TO EMIT CUSTOM SIGNAL WHEN AUTHSOCKET IS FAILED
-  socket.on("connect_error", () => {
-    logout();
+  socket.on("connect_error", (err) => {
+    if (err.message === "NOT_AUTHORIZED") {
+      logout();
+    }
   });
 
   socket.on("friends-invitations", (data) => {

@@ -79,7 +79,7 @@ exports.postAccept = async (req, res) => {
 
     updateFriendsPendingInvitations(receiverId.toString());
 
-    // Update friends list of both users if they are only
+    // Update friends list of both users if they are online
     updateFriends(senderId.toString());
     updateFriends(receiverId.toString());
 
