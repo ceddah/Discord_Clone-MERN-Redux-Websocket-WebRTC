@@ -1,5 +1,5 @@
 const FriendInvitation = require("../models/friendInvitation");
-const User = require("../models/User");
+const User = require("../models/user");
 const {
   updateFriendsPendingInvitations,
   updateFriends,
