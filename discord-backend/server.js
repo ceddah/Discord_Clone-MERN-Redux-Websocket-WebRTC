@@ -39,6 +39,6 @@ mongoose
     server.listen(PORT, () => console.log(`Server is listening on ${PORT}`));
   })
   .catch((err) => {
-    console.log("Databse connection failed. Server is not running.");
+    console.log("Database connection failed. Server is not running.");
     console.log(err);
   });
