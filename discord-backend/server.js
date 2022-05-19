@@ -8,9 +8,9 @@ const authRoutes = require("./routes/authRoutes");
 const friendInvitationRoutes = require("./routes/friendInvitationRoutes");
 require("dotenv").config();
 
-// if (process.env.NODE_ENV !== "PRODUCTION") {
-//   require("dotenv").config();
-// }
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config();
+}
 
 const PORT = process.env.PORT || process.env.API_PORT;
 const app = express();
