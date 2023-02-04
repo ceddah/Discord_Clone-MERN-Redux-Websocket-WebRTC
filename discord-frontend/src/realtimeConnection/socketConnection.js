@@ -13,7 +13,7 @@ import * as webRTCHandler from "./webRTCHandler";
 let socket = null;
 export const connectWithSocketServer = (userDetails) => {
   const jwtToken = userDetails.token;
-  socket = io("https://discord-clone-socket.herokuapp.com/", {
+  socket = io("https://my-discord-clone-01.onrender.com/", {
     auth: {
       token: jwtToken,
     },
