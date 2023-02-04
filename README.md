@@ -21,3 +21,4 @@ Key Features:
 - Screen Sharing
 
 #### Preview: [Live Demo:](https://discord-clone-socket.herokuapp.com/)
+** There are some issues with host blocking websockets, you might need to try multiple times to connect
