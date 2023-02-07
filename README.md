@@ -20,5 +20,5 @@ Key Features:
 - Group Calls -- Audio and Video
 - Screen Sharing
 
-#### Preview: [Live Demo:](https://discord-clone-socket.herokuapp.com/)
+#### Preview: [Live Demo:](https://my-discord-clone-01.onrender.com)
 ** There are some issues with host blocking websockets, you might need to try multiple times to connect
